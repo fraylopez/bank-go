@@ -1,6 +1,9 @@
 package domain
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestAccount(t *testing.T) {
 
@@ -17,6 +20,22 @@ func TestAccount(t *testing.T) {
 		if account.Balance != 10 {
 			t.Errorf("Deposit did not add to the balance")
 		}
+	})
+
+	t.Run("Withdraw subtracts from the balance", func(t *testing.T) {
+		account := NewAccount()
+		account.Deposit(10)
+		account.Withdraw(5)
+		if account.Balance != 5 {
+			t.Errorf("Withdraw did not subtract from the balance")
+		}
+	})
+
+	t.Run("Withdraw does not allow negative balance", func(t *testing.T) {
+		account := NewAccount()
+		account.Deposit(10)
+		err := account.Withdraw(15)
+		assert.IsType(t, &NotEnoughFundsError{}, err)
 	})
 
 }

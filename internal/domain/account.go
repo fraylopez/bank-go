@@ -16,3 +16,11 @@ func NewAccount() *Account {
 func (a *Account) Deposit(amount float64) {
 	a.Balance += amount
 }
+
+func (a *Account) Withdraw(amount float64) error {
+	if a.Balance < amount {
+		return &NotEnoughFundsError{}
+	}
+	a.Balance -= amount
+	return nil
+}
