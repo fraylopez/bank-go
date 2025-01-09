@@ -25,7 +25,9 @@ func TestAccount(t *testing.T) {
 	t.Run("Withdraw subtracts from the balance", func(t *testing.T) {
 		account := NewAccount()
 		account.Deposit(10)
-		account.Withdraw(5)
+		if err := account.Withdraw(5); err != nil {
+			t.Errorf("Error withdrawing from account: %v", err)
+		}
 		if account.Balance != 5 {
 			t.Errorf("Withdraw did not subtract from the balance")
 		}
