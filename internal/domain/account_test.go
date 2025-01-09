@@ -10,4 +10,13 @@ func TestAccount(t *testing.T) {
 			t.Errorf("Account balance is not zero")
 		}
 	})
+
+	t.Run("Deposit adds to the balance", func(t *testing.T) {
+		account := NewAccount()
+		account.Deposit(10)
+		if account.Balance != 10 {
+			t.Errorf("Deposit did not add to the balance")
+		}
+	})
+
 }

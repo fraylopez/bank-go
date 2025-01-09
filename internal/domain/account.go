@@ -12,3 +12,7 @@ func NewAccount() *Account {
 		Id: uuid.NewString(),
 	}
 }
+
+func (a *Account) Deposit(amount float64) {
+	a.Balance += amount
+}
