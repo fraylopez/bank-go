@@ -8,8 +8,9 @@ import (
 
 func NewServer() *http.Server {
 	router := mux.NewRouter()
+
 	router.HandleFunc("/health", healthHandler).
-		Methods("GET")
+		Methods(http.MethodGet)
 
 	return &http.Server{
 		Addr:    ":8080",
