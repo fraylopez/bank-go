@@ -1,4 +1,4 @@
-package infrastructure
+package storage
 
 import "bank/internal/domain"
 

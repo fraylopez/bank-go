@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"bank/internal/infrastructure"
+	"bank/internal/infrastructure/storage"
 	"github.com/google/uuid"
 	"testing"
 )
@@ -40,5 +40,5 @@ func TestBank(t *testing.T) {
 }
 
 func GetBank() *Bank {
-	return NewBank(infrastructure.NewInMemoryAccountRepository())
+	return NewBank(storage.NewInMemoryAccountRepository())
 }
