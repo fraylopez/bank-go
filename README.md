@@ -34,7 +34,8 @@ User --> Transfer
 ```mermaid
 
 classDiagram
-    class Server
+    class App
+    class HttpServer
     class Bank
     class AccountRepository {
         <<interface>>
@@ -46,8 +47,9 @@ classDiagram
         +GetBalance
     }
     
-    
-    Server --> Bank
+    App --> HttpServer
+    App --> Bank
+    HttpServer ..> Bank
     Bank --> AccountRepository
     AccountRepository <|-- InMemoryAccountRepository
     Bank --> Account
