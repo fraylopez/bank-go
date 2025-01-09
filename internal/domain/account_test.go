@@ -4,10 +4,10 @@ import "testing"
 
 func TestAccount(t *testing.T) {
 
-	t.Run("Account can be instantiated", func(t *testing.T) {
+	t.Run("Account has no balance on opening", func(t *testing.T) {
 		account := NewAccount()
-		if account == nil {
-			t.Errorf("Account was not instantiated")
+		if account.Balance != 0 {
+			t.Errorf("Account balance is not zero")
 		}
 	})
 }

@@ -3,7 +3,8 @@ package domain
 import "github.com/google/uuid"
 
 type Account struct {
-	Id string
+	Id      string
+	Balance float64
 }
 
 func NewAccount() *Account {
