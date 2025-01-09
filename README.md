@@ -36,7 +36,9 @@ User --> Transfer
 classDiagram
     class Server
     class Bank
-    interface AccountRepository
+    class AccountRepository {
+        <<interface>>
+    }
     class InMemoryAccountRepository
     class Account {
         +Deposit
