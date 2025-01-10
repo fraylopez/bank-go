@@ -20,12 +20,14 @@ usecase Deposit
 usecase Withdraw
 usecase GetBalance
 usecase Transfer
+usecase CloseAccount
 
 User --> CreateAccount
 User --> Deposit
 User --> Withdraw
 User --> GetBalance
 User --> Transfer
+User --> CloseAccount
 
 @enduml
 
@@ -150,3 +152,38 @@ Response:
 
 
 
+## Fun list
+
+### use cases
+- [x] create account
+- [x] deposit money
+- [x] withdraw money
+- [ ] create user
+- [ ] create a new user with a new account
+- [ ] get balance
+- [ ] transfer money
+- [ ] close account
+
+### domain rules
+- [ ] Accounts have a currency
+  - [ ] prevent depositing money in a different currency
+  - [ ] prevent withdrawing money in a different currency
+  - [ ] prevent transferring money in a different currency
+- [ ] Users are the owners of accounts
+- [ ] Removing users should close all accounts
+- [ ] Loans
+  - [ ] Users have a credit score [0-100%]
+  - [ ] Initial credit score is 100
+  - [ ] Users with balance > 0 can request a loan for up to 100% of their balance
+  - [ ] Loans reduce the credit score by the percentage of the loan amount relative to the user's balance
+    (ie: 500 loan on a 1000 balance reduces the credit score by 50%)
+  - [ ] A user with a loan cannot close their last account
+
+### infrastructure
+- [ ] http api
+  - [x] health check endpoint
+  - [x] Users can create accounts
+  - [ ] Users can deposit money
+  - [ ] Users can withdraw money
+  - [ ] Users can transfer money between accounts
+- [ ] Use a database to store accounts
