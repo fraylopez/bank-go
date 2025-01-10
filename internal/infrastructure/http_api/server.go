@@ -2,6 +2,7 @@ package http_api
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/fraylopez/bank-go/internal"
 	"github.com/gorilla/mux"
 	"log"
@@ -28,10 +29,10 @@ func Start(b *internal.Bank) {
 		Addr:    ":8080",
 		Handler: r,
 	}
+	fmt.Printf("Starting server on %v", s.Addr)
 	if err := http.ListenAndServe(s.Addr, s.Handler); err != nil {
 		panic(err)
 	}
-	log.Printf("Starting server on %v", s.Addr)
 }
 
 func healthHandler(w http.ResponseWriter, _ *http.Request) {
