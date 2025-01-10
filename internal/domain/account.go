@@ -4,12 +4,14 @@ import "github.com/google/uuid"
 
 type Account struct {
 	Id      string
+	Holder  string
 	Balance float64
 }
 
-func NewAccount() *Account {
+func NewAccount(holder string) *Account {
 	return &Account{
-		Id: uuid.NewString(),
+		Id:     uuid.NewString(),
+		Holder: holder,
 	}
 }
 

@@ -170,6 +170,9 @@ Response:
   - [ ] prevent withdrawing money in a different currency
   - [ ] prevent transferring money in a different currency
 - [ ] Users are the owners of accounts
+  - [ ] Users can have multiple accounts
+  - [ ] Accounts have an owner
+- [ ] Users can have multiple accounts
 - [ ] Removing users should close all accounts
 - [ ] Loans
   - [ ] Users have a credit score [0-100%]

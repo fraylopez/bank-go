@@ -16,7 +16,7 @@ func NewBank(accountRepository domain.AccountRepository) *Bank {
 }
 
 func (b *Bank) OpenAccount() (string, error) {
-	account := domain.NewAccount()
+	account := domain.BuildAccount()
 	if err := b.accountRepository.OpenAccount(account); err != nil {
 		return "", err
 	}
