@@ -1,6 +1,6 @@
 package internal
 
-import "bank/internal/domain"
+import "github.com/fraylopez/bank-go/internal/domain"
 
 // Bank is a struct that represents a bank
 type Bank struct {

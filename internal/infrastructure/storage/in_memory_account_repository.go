@@ -1,6 +1,6 @@
 package storage
 
-import "bank/internal/domain"
+import "github.com/fraylopez/bank-go/internal/domain"
 
 type InMemoryAccountRepository struct {
 	accounts map[string]*domain.Account

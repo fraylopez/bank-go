@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"bank/internal/domain"
+	"github.com/fraylopez/bank-go/internal/domain"
 	"testing"
 )
 

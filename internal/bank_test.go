@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"bank/internal/infrastructure/storage"
+	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
 	"github.com/google/uuid"
 	"testing"
 )
