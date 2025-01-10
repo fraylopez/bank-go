@@ -2,7 +2,6 @@ package http_api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/fraylopez/bank-go/internal"
 	"github.com/gorilla/mux"
 	"log"
@@ -23,13 +22,12 @@ func Handler(b *internal.Bank) *mux.Router {
 	return router
 }
 
-func Start(b *internal.Bank) {
+func Start(b *internal.Bank, address string) {
 	r := Handler(b)
 	s := &http.Server{
-		Addr:    ":8080",
+		Addr:    address,
 		Handler: r,
 	}
-	fmt.Printf("Starting server on %v", s.Addr)
 	if err := http.ListenAndServe(s.Addr, s.Handler); err != nil {
 		panic(err)
 	}
