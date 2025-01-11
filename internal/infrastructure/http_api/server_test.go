@@ -74,6 +74,35 @@ func TestServer(t *testing.T) {
 		}
 	})
 
+	t.Run("should withdraw funds", func(t *testing.T) {
+		accountId := createAccount(ts)
+		deposit(ts, accountId, 10)
+
+		var requestBody = struct {
+			Amount float64 `json:"amount"`
+		}{
+			Amount: 5,
+		}
+
+		reqBody, err := json.Marshal(requestBody)
+		if err != nil {
+			t.Errorf("Error marshalling request body: %v", err)
+		}
+
+		res, err := http.Post(
+			ts.URL+"/accounts/"+accountId+"/withdraw",
+			"application/json",
+			bytes.NewBuffer(reqBody),
+		)
+
+		if err != nil {
+			t.Errorf("Error making request: %v", err)
+		}
+		if res.StatusCode != http.StatusOK {
+			t.Errorf("Expected status code 200, got %v", res.StatusCode)
+		}
+
+	})
 }
 
 func createAccount(ts *httptest.Server) string {
@@ -91,4 +120,29 @@ func createAccount(ts *httptest.Server) string {
 
 	}
 	return responseBody.AccountId
+}
+
+func deposit(ts *httptest.Server, accountId string, amount float64) {
+	var requestBody = struct {
+		Amount float64 `json:"amount"`
+	}{
+		Amount: amount,
+	}
+
+	reqBody, err := json.Marshal(requestBody)
+	if err != nil {
+		panic(fmt.Sprintf("Error marshalling request body: %v", err))
+	}
+
+	res, err := http.Post(
+		ts.URL+"/accounts/"+accountId+"/deposit",
+		"application/json",
+		bytes.NewBuffer(reqBody),
+	)
+	if err != nil {
+		panic(fmt.Sprintf("Error making request: %v", err))
+	}
+	if res.StatusCode != http.StatusOK {
+		panic(fmt.Sprintf("Expected status code 200, got %v", res.StatusCode))
+	}
 }
