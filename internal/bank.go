@@ -39,3 +39,11 @@ func (b *Bank) Withdraw(accountId string, amount float64) error {
 	}
 	return account.Withdraw(amount)
 }
+
+func (b *Bank) GetBalance(accountId string) (float64, error) {
+	account, err := b.accountRepository.GetAccountById(accountId)
+	if err != nil {
+		return 0, err
+	}
+	return account.Balance, nil
+}

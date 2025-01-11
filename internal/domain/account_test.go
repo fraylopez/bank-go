@@ -39,5 +39,4 @@ func TestAccount(t *testing.T) {
 		err := account.Withdraw(15)
 		assert.IsType(t, &NotEnoughFundsError{}, err)
 	})
-
 }

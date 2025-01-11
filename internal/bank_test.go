@@ -37,6 +37,15 @@ func TestBank(t *testing.T) {
 		}
 	})
 
+	t.Run("Get balance from Account", func(t *testing.T) {
+		bank := GetBank()
+		accountId, _ := bank.OpenAccount()
+		_ = bank.Deposit(accountId, 10)
+		balance, _ := bank.GetBalance(accountId)
+		if balance != 10 {
+			t.Errorf("Expected balance to be 10, got %v", balance)
+		}
+	})
 }
 
 func GetBank() *Bank {
