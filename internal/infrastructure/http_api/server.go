@@ -19,6 +19,11 @@ func Handler(b *internal.Bank) *mux.Router {
 	}).
 		Methods(http.MethodPost)
 
+	router.HandleFunc("/accounts/{account_id}/deposit", func(w http.ResponseWriter, r *http.Request) {
+		depositHandler(w, r, b)
+	}).
+		Methods(http.MethodPost)
+
 	return router
 }
 
@@ -64,4 +69,39 @@ func openAccountHandler(w http.ResponseWriter, _ *http.Request, b *internal.Bank
 		log.Printf("Error writing response: %v", err)
 	}
 
+}
+
+func depositHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
+	vars := mux.Vars(r)
+	accountId := vars["account_id"]
+
+	var requestBody = struct {
+		Amount float64 `json:"amount"`
+	}{
+		Amount: 10,
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte("Invalid request body"))
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
+		return
+	}
+
+	if err := b.Deposit(accountId, requestBody.Amount); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := w.Write([]byte(err.Error()))
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	_, err2 := w.Write([]byte("OK"))
+	if err2 != nil {
+		log.Printf("Error writing response: %v", err2)
+	}
 }
