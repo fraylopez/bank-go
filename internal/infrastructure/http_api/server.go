@@ -29,6 +29,10 @@ func Handler(b *internal.Bank) *mux.Router {
 	}).
 		Methods(http.MethodPost)
 
+	router.HandleFunc("/accounts/{account_id}/balance", func(w http.ResponseWriter, r *http.Request) {
+		getBalanceHandler(w, r, b)
+	}).Methods(http.MethodGet)
+
 	return router
 }
 
@@ -152,5 +156,32 @@ func withdrawHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	_, err2 := w.Write([]byte("OK"))
 	if err2 != nil {
 		log.Printf("Error writing response: %v", err2)
+	}
+}
+
+func getBalanceHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
+	vars := mux.Vars(r)
+	accountId := vars["account_id"]
+
+	balance, err := b.GetBalance(accountId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := w.Write([]byte(err.Error()))
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
+		return
+	}
+
+	responseBody := struct {
+		Balance float64 `json:"balance"`
+	}{
+		Balance: balance,
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Add("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(responseBody); err != nil {
+		log.Printf("Error writing response: %v", err)
 	}
 }

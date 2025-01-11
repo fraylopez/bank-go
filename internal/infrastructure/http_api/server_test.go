@@ -111,6 +111,30 @@ func TestServer(t *testing.T) {
 		}
 
 	})
+
+	t.Run("should get balance", func(t *testing.T) {
+		accountId := createAccount(ts)
+		deposit(ts, accountId, 10)
+
+		res, err := http.Get(ts.URL + "/accounts/" + accountId + "/balance")
+		if err != nil {
+			t.Errorf("Error making request: %v", err)
+		}
+		if res.StatusCode != http.StatusOK {
+			t.Errorf("Expected status code 200, got %v", res.StatusCode)
+		}
+
+		var responseBody struct {
+			Balance float64 `json:"balance"`
+		}
+		err = json.NewDecoder(res.Body).Decode(&responseBody)
+		if err != nil {
+			t.Errorf("Error decoding response body: %v", err)
+		}
+		if responseBody.Balance != 10 {
+			t.Errorf("Expected balance to be 10, got %v", responseBody.Balance)
+		}
+	})
 }
 
 func createAccount(ts *httptest.Server) string {
