@@ -81,14 +81,11 @@ Request:
 
 Response:
 200 OK
-{
-    "id": "1",
-}
 ```
 
 #### Deposit
 ```
-POST /accounts/1/deposit
+POST /accounts/{account_id}/deposit
 
 Request:
 {
@@ -97,15 +94,11 @@ Request:
 
 Response:
 200 OK
-{
-    "id": "1",
-    "balance": 100
-}
 ```
 
 #### Withdraw
 ```
-POST /accounts/1/withdraw
+POST /accounts/{account_id}/withdraw
 
 Request:
 {
@@ -114,20 +107,15 @@ Request:
 
 Response:
 200 OK
-{
-    "id": "1",
-    "balance": 50
-}
 ```
 
 #### Get Balance
 ```
-GET /accounts/1
+GET /accounts/{account_id}
 
 Response:
 200 OK
 {
-    "id": "1",
     "balance": 50
 }
 ```
@@ -160,7 +148,7 @@ Response:
 - [x] withdraw money
 - [ ] create user
 - [ ] create a new user with a new account
-- [ ] get balance
+- [x] get balance
 - [ ] transfer money
 - [ ] close account
 
@@ -186,7 +174,8 @@ Response:
 - [ ] http api
   - [x] health check endpoint
   - [x] Users can create accounts
-  - [ ] Users can deposit money
-  - [ ] Users can withdraw money
+  - [x] Users can deposit money
+  - [x] Users can withdraw money
+  - [ ] Users can get balance
   - [ ] Users can transfer money between accounts
 - [ ] Use a database to store accounts
