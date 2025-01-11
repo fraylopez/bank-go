@@ -9,7 +9,7 @@ import (
 func TestBank(t *testing.T) {
 	t.Run("Open a Account", func(t *testing.T) {
 		bank := GetBank()
-		accountId, err := bank.OpenAccount()
+		accountId, err := bank.OpenAccount("John Doe")
 		if err != nil {
 			t.Errorf("Error opening account: %v", err)
 		}
@@ -20,7 +20,7 @@ func TestBank(t *testing.T) {
 
 	t.Run("Deposit to Account", func(t *testing.T) {
 		bank := GetBank()
-		accountId, _ := bank.OpenAccount()
+		accountId, _ := bank.OpenAccount("John Doe")
 		err := bank.Deposit(accountId, 10)
 		if err != nil {
 			t.Errorf("Error depositing to account: %v", err)
@@ -29,7 +29,7 @@ func TestBank(t *testing.T) {
 
 	t.Run("Withdraw from Account", func(t *testing.T) {
 		bank := GetBank()
-		accountId, _ := bank.OpenAccount()
+		accountId, _ := bank.OpenAccount("John Doe")
 		_ = bank.Deposit(accountId, 10)
 		err := bank.Withdraw(accountId, 5)
 		if err != nil {
@@ -39,7 +39,7 @@ func TestBank(t *testing.T) {
 
 	t.Run("Get balance from Account", func(t *testing.T) {
 		bank := GetBank()
-		accountId, _ := bank.OpenAccount()
+		accountId, _ := bank.OpenAccount("John Doe")
 		_ = bank.Deposit(accountId, 10)
 		balance, _ := bank.GetBalance(accountId)
 		if balance != 10 {

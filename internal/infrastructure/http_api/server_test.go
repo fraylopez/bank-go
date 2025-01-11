@@ -26,7 +26,15 @@ func TestServer(t *testing.T) {
 	})
 
 	t.Run("should create a new account", func(t *testing.T) {
-		res, err := http.Post(ts.URL+"/accounts", "application/json", nil)
+		var requestBody = struct {
+			Holder string `json:"holder"`
+		}{
+			Holder: "John Doe",
+		}
+
+		reqBody, err := json.Marshal(requestBody)
+
+		res, err := http.Post(ts.URL+"/accounts", "application/json", bytes.NewBuffer(reqBody))
 		if err != nil {
 			t.Errorf("Error making request: %v", err)
 		}
@@ -106,7 +114,17 @@ func TestServer(t *testing.T) {
 }
 
 func createAccount(ts *httptest.Server) string {
-	res, err := http.Post(ts.URL+"/accounts", "application/json", nil)
+	var requestBody = struct {
+		Holder string `json:"holder"`
+	}{
+		Holder: "John Doe",
+	}
+
+	reqBody, err := json.Marshal(requestBody)
+	if err != nil {
+		panic(fmt.Sprintf("Error marshalling request body: %v", err))
+	}
+	res, err := http.Post(ts.URL+"/accounts", "application/json", bytes.NewBuffer(reqBody))
 	if err != nil {
 		panic(fmt.Sprintf("Error making request: %v", err))
 	}

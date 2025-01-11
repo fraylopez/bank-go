@@ -51,8 +51,21 @@ func healthHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func openAccountHandler(w http.ResponseWriter, _ *http.Request, b *internal.Bank) {
-	id, err := b.OpenAccount()
+func openAccountHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
+	var requestBody struct {
+		Holder string `json:"holder"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte("Invalid request body"))
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
+		return
+	}
+
+	id, err := b.OpenAccount(requestBody.Holder)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(err.Error()))
@@ -80,10 +93,8 @@ func depositHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	vars := mux.Vars(r)
 	accountId := vars["account_id"]
 
-	var requestBody = struct {
+	var requestBody struct {
 		Amount float64 `json:"amount"`
-	}{
-		Amount: 10,
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
@@ -115,10 +126,8 @@ func withdrawHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	vars := mux.Vars(r)
 	accountId := vars["account_id"]
 
-	var requestBody = struct {
+	var requestBody struct {
 		Amount float64 `json:"amount"`
-	}{
-		Amount: 5,
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
