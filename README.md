@@ -176,6 +176,6 @@ Response:
   - [x] Users can create accounts
   - [x] Users can deposit money
   - [x] Users can withdraw money
-  - [ ] Users can get balance
+  - [x] Users can get balance
   - [ ] Users can transfer money between accounts
 - [ ] Use a database to store accounts
