@@ -16,12 +16,12 @@ func main() {
 	address := "localhost:8080"
 	go http_api.Start(bank, address)
 	log.Println("Bank application started!")
-	health(address)
+	checkHealth(address)
 }
 
-func health(address string) {
+func checkHealth(address string) {
 	for {
-		res, err := http.Get("http://" + address + "/health")
+		res, err := http.Get("http://" + address + "/checkHealth")
 		isHealthy := res.StatusCode == http.StatusOK && err == nil
 		if !isHealthy {
 			log.Println("Bank application is not healthy, shutting down...")
