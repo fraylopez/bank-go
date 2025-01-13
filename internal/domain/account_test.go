@@ -40,4 +40,10 @@ func TestAccount(t *testing.T) {
 		err := account.Withdraw(15)
 		assert.IsType(t, &NotEnoughFundsError{}, err)
 	})
+
+	t.Run("Prevents currency mismatch", func(t *testing.T) {
+		account := BuildEURAccount()
+		err := account.DepositMoney(USD(10))
+		assert.IsType(t, &CurrencyMismatchError{}, err)
+	})
 }

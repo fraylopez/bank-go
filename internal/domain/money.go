@@ -24,13 +24,12 @@ func NewMoney(currency string) Money {
 	}
 }
 
-func (m *Money) Add(amount float64, currency string) (Money, error) {
-	if m.Currency != currency {
-		// convert amount to m.Currency
+func (m *Money) Add(adder Money) (Money, error) {
+	if m.Currency != adder.Currency {
 		return Money{}, &CurrencyMismatchError{}
 	}
 	return Money{
-		Amount:   m.Amount + amount,
+		Amount:   m.Amount + adder.Amount,
 		Currency: m.Currency,
 	}, nil
 }

@@ -21,6 +21,14 @@ func NewAccount(holder string, currency string) *Account {
 func (a *Account) Deposit(amount float64) {
 	a.Balance.Amount += amount
 }
+func (a *Account) DepositMoney(d Money) error {
+	if newBalance, err := a.Balance.Add(d); err == nil {
+		a.Balance = newBalance
+	} else {
+		return err
+	}
+	return nil
+}
 
 func (a *Account) Withdraw(amount float64) error {
 	if a.Balance.Amount < amount {
