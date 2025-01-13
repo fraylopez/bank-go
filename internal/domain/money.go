@@ -24,23 +24,31 @@ func NewMoney(currency string) Money {
 	}
 }
 
-func (m *Money) Add(adder Money) (Money, error) {
-	if m.Currency != adder.Currency {
+func MoneyFrom(amount float64, currency string) Money {
+	return Money{
+		Amount:   amount,
+		Currency: currency,
+	}
+}
+
+func (m *Money) Add(addend Money) (Money, error) {
+	if m.Currency != addend.Currency {
 		return Money{}, &CurrencyMismatchError{}
 	}
 	return Money{
-		Amount:   m.Amount + adder.Amount,
+
+		Amount:   m.Amount + addend.Amount,
 		Currency: m.Currency,
 	}, nil
 }
 
-func (m *Money) Subtract(amount float64, currency string) (Money, error) {
-	if m.Currency != currency {
+func (m *Money) Subtract(subtrahend Money) (Money, error) {
+	if m.Currency != subtrahend.Currency {
 		// convert amount to m.Currency
 		return Money{}, &CurrencyMismatchError{}
 	}
 	return Money{
-		Amount:   m.Amount - amount,
+		Amount:   m.Amount - subtrahend.Amount,
 		Currency: m.Currency,
 	}, nil
 }

@@ -9,3 +9,8 @@ func BuildEURAccount() *Account {
 	holder := "John Doe"
 	return NewAccount(holder, "EUR")
 }
+
+func BuildUSDAccount() *Account {
+	holder := "John Doe"
+	return NewAccount(holder, "USD")
+}

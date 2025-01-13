@@ -57,7 +57,8 @@ func healthHandler(w http.ResponseWriter, _ *http.Request) {
 
 func openAccountHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	var requestBody struct {
-		Holder string `json:"holder"`
+		Holder   string `json:"holder"`
+		Currency string `json:"currency"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
@@ -69,7 +70,7 @@ func openAccountHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank
 		return
 	}
 
-	id, err := b.OpenAccount(requestBody.Holder)
+	id, err := b.OpenAccount(requestBody.Holder, requestBody.Currency)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(err.Error()))
@@ -98,7 +99,8 @@ func depositHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	accountId := vars["account_id"]
 
 	var requestBody struct {
-		Amount float64 `json:"amount"`
+		Amount   float64 `json:"amount"`
+		Currency string  `json:"currency"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
@@ -110,7 +112,7 @@ func depositHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 		return
 	}
 
-	if err := b.Deposit(accountId, requestBody.Amount); err != nil {
+	if err := b.Deposit(accountId, requestBody.Amount, requestBody.Currency); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(err.Error()))
 		if err != nil {
@@ -131,7 +133,8 @@ func withdrawHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 	accountId := vars["account_id"]
 
 	var requestBody struct {
-		Amount float64 `json:"amount"`
+		Amount   float64 `json:"amount"`
+		Currency string  `json:"currency"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
@@ -143,7 +146,7 @@ func withdrawHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank) {
 		return
 	}
 
-	if err := b.Withdraw(accountId, requestBody.Amount); err != nil {
+	if err := b.Withdraw(accountId, requestBody.Amount, requestBody.Currency); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(err.Error()))
 		if err != nil {
@@ -174,9 +177,11 @@ func getBalanceHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank)
 	}
 
 	responseBody := struct {
-		Balance float64 `json:"balance"`
+		Balance  float64 `json:"balance"`
+		Currency string  `json:"currency"`
 	}{
-		Balance: balance.Amount,
+		Balance:  balance.Amount,
+		Currency: balance.Currency,
 	}
 
 	w.WriteHeader(http.StatusOK)

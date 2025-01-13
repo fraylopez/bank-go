@@ -18,10 +18,7 @@ func NewAccount(holder string, currency string) *Account {
 	}
 }
 
-func (a *Account) Deposit(amount float64) {
-	a.Balance.Amount += amount
-}
-func (a *Account) DepositMoney(d Money) error {
+func (a *Account) Deposit(d Money) error {
 	if newBalance, err := a.Balance.Add(d); err == nil {
 		a.Balance = newBalance
 	} else {
@@ -30,10 +27,14 @@ func (a *Account) DepositMoney(d Money) error {
 	return nil
 }
 
-func (a *Account) Withdraw(amount float64) error {
-	if a.Balance.Amount < amount {
+func (a *Account) Withdraw(w Money) error {
+	if a.Balance.Amount < w.Amount {
 		return &NotEnoughFundsError{}
 	}
-	a.Balance.Amount -= amount
+	if newBalance, err := a.Balance.Subtract(w); err == nil {
+		a.Balance = newBalance
+	} else {
+		return err
+	}
 	return nil
 }
