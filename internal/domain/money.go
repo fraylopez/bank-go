@@ -10,25 +10,17 @@ type SupportedCurrencies struct {
 	USD string
 }
 
-func NewMoney(currency string) Money {
-	return Money{
-		Amount:   0,
-		Currency: currency,
-	}
-}
-
-func ZeroEUR() Money {
-	return NewMoney("EUR")
-}
-
-func ZeroUSD() Money {
-	return NewMoney("USD")
-}
-
 func USD(amount float64) Money {
 	return Money{
 		Amount:   amount,
 		Currency: "USD",
+	}
+}
+
+func NewMoney(currency string) Money {
+	return Money{
+		Amount:   0,
+		Currency: currency,
 	}
 }
 
