@@ -155,8 +155,7 @@ Response:
 ### domain rules
 - [ ] Accounts have a currency
   - [ ] prevent depositing money in a different currency
-  - [ ] prevent withdrawing money in a different currency
-  - [ ] prevent transferring money in a different currency
+  - [ ] prevent transferring money to a different currency account
 - [ ] Users are the owners of accounts
   - [ ] Users can have multiple accounts
   - [ ] Accounts have an owner
@@ -177,5 +176,9 @@ Response:
   - [x] Users can deposit money
   - [x] Users can withdraw money
   - [x] Users can get balance
+  - [ ] Graceful shutdown bmwg2
   - [ ] Users can transfer money between accounts
 - [ ] Use a database to store accounts
+
+### Refactorings
+- [ ] handlers --> bmwg2

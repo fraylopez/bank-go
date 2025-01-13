@@ -176,7 +176,7 @@ func getBalanceHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank)
 	responseBody := struct {
 		Balance float64 `json:"balance"`
 	}{
-		Balance: balance,
+		Balance: balance.Amount,
 	}
 
 	w.WriteHeader(http.StatusOK)

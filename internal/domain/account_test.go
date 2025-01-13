@@ -2,6 +2,7 @@ package domain
 
 import (
 	"github.com/stretchr/testify/assert"
+	"reflect"
 	"testing"
 )
 
@@ -9,7 +10,7 @@ func TestAccount(t *testing.T) {
 
 	t.Run("Account has no balance on opening", func(t *testing.T) {
 		account := BuildAccount()
-		if account.Balance != 0 {
+		if !reflect.DeepEqual(account.Balance, USD(0)) {
 			t.Errorf("Account balance is not zero")
 		}
 	})
@@ -17,7 +18,7 @@ func TestAccount(t *testing.T) {
 	t.Run("Deposit adds to the balance", func(t *testing.T) {
 		account := BuildAccount()
 		account.Deposit(10)
-		if account.Balance != 10 {
+		if !account.Balance.Equals(USD(10)) {
 			t.Errorf("Deposit did not add to the balance")
 		}
 	})
@@ -28,7 +29,7 @@ func TestAccount(t *testing.T) {
 		if err := account.Withdraw(5); err != nil {
 			t.Errorf("Error withdrawing from account: %v", err)
 		}
-		if account.Balance != 5 {
+		if !account.Balance.Equals(USD(5)) {
 			t.Errorf("Withdraw did not subtract from the balance")
 		}
 	})

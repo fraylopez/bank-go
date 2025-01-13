@@ -16,7 +16,7 @@ func NewBank(accountRepository domain.AccountRepository) *Bank {
 }
 
 func (b *Bank) OpenAccount(holder string) (string, error) {
-	account := domain.NewAccount(holder)
+	account := domain.NewAccount(holder, "USD")
 	if err := b.accountRepository.OpenAccount(account); err != nil {
 		return "", err
 	}
@@ -40,10 +40,10 @@ func (b *Bank) Withdraw(accountId string, amount float64) error {
 	return account.Withdraw(amount)
 }
 
-func (b *Bank) GetBalance(accountId string) (float64, error) {
+func (b *Bank) GetBalance(accountId string) (domain.Money, error) {
 	account, err := b.accountRepository.GetAccountById(accountId)
 	if err != nil {
-		return 0, err
+		return domain.Money{}, err
 	}
 	return account.Balance, nil
 }

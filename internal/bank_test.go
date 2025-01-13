@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/fraylopez/bank-go/internal/domain"
 	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
 	"github.com/google/uuid"
 	"testing"
@@ -42,7 +43,7 @@ func TestBank(t *testing.T) {
 		accountId, _ := bank.OpenAccount("John Doe")
 		_ = bank.Deposit(accountId, 10)
 		balance, _ := bank.GetBalance(accountId)
-		if balance != 10 {
+		if !balance.Equals(domain.USD(10)) {
 			t.Errorf("Expected balance to be 10, got %v", balance)
 		}
 	})
