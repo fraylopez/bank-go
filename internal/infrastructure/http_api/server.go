@@ -181,7 +181,7 @@ func getBalanceHandler(w http.ResponseWriter, r *http.Request, b *internal.Bank)
 		Currency string  `json:"currency"`
 	}{
 		Balance:  balance.Amount,
-		Currency: balance.Currency,
+		Currency: balance.Currency.String(),
 	}
 
 	w.WriteHeader(http.StatusOK)

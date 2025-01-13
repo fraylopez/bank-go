@@ -2,32 +2,48 @@ package domain
 
 type Money struct {
 	Amount   float64
-	Currency string
+	Currency Currencies
+}
+type Currencies string
+
+const (
+	EUROS    Currencies = "EUR"
+	USDollar            = "USD"
+)
+
+func Currency(currency string) Currencies {
+	switch currency {
+	case "EUR":
+		return EUROS
+	case "USD":
+		return USDollar
+	default:
+		panic("unknown currency")
+	}
 }
 
-type SupportedCurrencies struct {
-	EUR string
-	USD string
-}
-
-func USD(amount float64) Money {
-	return Money{
-		Amount:   amount,
-		Currency: "USD",
+func (c Currencies) String() string {
+	switch c {
+	case EUROS:
+		return "EUR"
+	case USDollar:
+		return "USD"
+	default:
+		panic("unknown currency")
 	}
 }
 
 func NewMoney(currency string) Money {
 	return Money{
 		Amount:   0,
-		Currency: currency,
+		Currency: Currency(currency),
 	}
 }
 
 func MoneyFrom(amount float64, currency string) Money {
 	return Money{
 		Amount:   amount,
-		Currency: currency,
+		Currency: Currency(currency),
 	}
 }
 

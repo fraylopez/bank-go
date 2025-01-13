@@ -27,9 +27,11 @@ func TestServer(t *testing.T) {
 
 	t.Run("should create a new account", func(t *testing.T) {
 		var requestBody = struct {
-			Holder string `json:"holder"`
+			Holder   string `json:"holder"`
+			Currency string `json:"currency"`
 		}{
-			Holder: "John Doe",
+			Holder:   "John Doe",
+			Currency: "USD",
 		}
 
 		reqBody, err := json.Marshal(requestBody)
@@ -59,9 +61,11 @@ func TestServer(t *testing.T) {
 		accountId := createAccount(ts)
 
 		var requestBody = struct {
-			Amount float64 `json:"amount"`
+			Amount   float64 `json:"amount"`
+			Currency string  `json:"currency"`
 		}{
-			Amount: 10,
+			Amount:   10,
+			Currency: "USD",
 		}
 
 		reqBody, err := json.Marshal(requestBody)
@@ -87,9 +91,11 @@ func TestServer(t *testing.T) {
 		deposit(ts, accountId, 10)
 
 		var requestBody = struct {
-			Amount float64 `json:"amount"`
+			Amount   float64 `json:"amount"`
+			Currency string  `json:"currency"`
 		}{
-			Amount: 5,
+			Amount:   5,
+			Currency: "USD",
 		}
 
 		reqBody, err := json.Marshal(requestBody)
@@ -125,23 +131,26 @@ func TestServer(t *testing.T) {
 		}
 
 		var responseBody struct {
-			Balance float64 `json:"balance"`
+			Balance  float64 `json:"balance"`
+			Currency string  `json:"currency"`
 		}
 		err = json.NewDecoder(res.Body).Decode(&responseBody)
 		if err != nil {
 			t.Errorf("Error decoding response body: %v", err)
 		}
-		if responseBody.Balance != 10 {
-			t.Errorf("Expected balance to be 10, got %v", responseBody.Balance)
+		if responseBody.Balance != 10 || responseBody.Currency != "USD" {
+			t.Errorf("Expected balance to be 10 USD, got %v %s", responseBody.Balance, responseBody.Currency)
 		}
 	})
 }
 
 func createAccount(ts *httptest.Server) string {
 	var requestBody = struct {
-		Holder string `json:"holder"`
+		Holder   string `json:"holder"`
+		Currency string `json:"currency"`
 	}{
-		Holder: "John Doe",
+		Holder:   "John Doe",
+		Currency: "USD",
 	}
 
 	reqBody, err := json.Marshal(requestBody)
@@ -166,9 +175,11 @@ func createAccount(ts *httptest.Server) string {
 
 func deposit(ts *httptest.Server, accountId string, amount float64) {
 	var requestBody = struct {
-		Amount float64 `json:"amount"`
+		Amount   float64 `json:"amount"`
+		Currency string  `json:"currency"`
 	}{
-		Amount: amount,
+		Amount:   amount,
+		Currency: "USD",
 	}
 
 	reqBody, err := json.Marshal(requestBody)

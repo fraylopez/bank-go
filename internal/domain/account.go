@@ -5,7 +5,7 @@ import "github.com/google/uuid"
 type Account struct {
 	Id       string
 	Holder   string
-	Currency string
+	Currency Currencies
 	Balance  Money
 }
 
@@ -13,7 +13,7 @@ func NewAccount(holder string, currency string) *Account {
 	return &Account{
 		Id:       uuid.NewString(),
 		Holder:   holder,
-		Currency: currency,
+		Currency: Currency(currency),
 		Balance:  NewMoney(currency),
 	}
 }
