@@ -76,7 +76,8 @@ POST /accounts
 
 Request: 
 {
-    "name": "John Doe"
+    "holder": "John Doe"
+    "currency": "USD"
 }
 
 Response:
@@ -90,6 +91,7 @@ POST /accounts/{account_id}/deposit
 Request:
 {
     "amount": 100
+    "currency": "USD"
 }
 
 Response:
@@ -103,6 +105,7 @@ POST /accounts/{account_id}/withdraw
 Request:
 {
     "amount": 50
+    "currency": "USD"
 }
 
 Response:
@@ -117,6 +120,7 @@ Response:
 200 OK
 {
     "balance": 50
+    "currency": "USD"
 }
 ```
 
@@ -135,6 +139,7 @@ Response:
 {
     "id": "1",
     "balance": 33
+    "currency": "USD"
 }
 ```
 
@@ -146,16 +151,16 @@ Response:
 - [x] create account
 - [x] deposit money
 - [x] withdraw money
-- [ ] create user
-- [ ] create a new user with a new account
 - [x] get balance
 - [ ] transfer money
+- [ ] create user
+- [ ] create a new user with a new account
 - [ ] close account
 
 ### domain rules
-- [ ] Accounts have a currency
-  - [ ] prevent depositing money in a different currency
-  - [ ] prevent transferring money to a different currency account
+- [x] Accounts have a currency
+  - [x] prevent depositing money in a different currency
+  - [x] prevent transferring money to a different currency account
 - [ ] Users are the owners of accounts
   - [ ] Users can have multiple accounts
   - [ ] Accounts have an owner
