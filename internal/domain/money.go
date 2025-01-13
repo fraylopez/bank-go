@@ -4,34 +4,11 @@ type Money struct {
 	Amount   float64
 	Currency Currencies
 }
-type Currencies string
 
 const (
 	EUROS    Currencies = "EUR"
 	USDollar            = "USD"
 )
-
-func Currency(currency string) Currencies {
-	switch currency {
-	case "EUR":
-		return EUROS
-	case "USD":
-		return USDollar
-	default:
-		panic("unknown currency")
-	}
-}
-
-func (c Currencies) String() string {
-	switch c {
-	case EUROS:
-		return "EUR"
-	case USDollar:
-		return "USD"
-	default:
-		panic("unknown currency")
-	}
-}
 
 func NewMoney(currency string) Money {
 	return Money{
