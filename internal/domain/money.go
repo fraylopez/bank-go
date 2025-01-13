@@ -56,3 +56,7 @@ func (m *Money) Subtract(subtrahend Money) (Money, error) {
 func (m *Money) Equals(other Money) bool {
 	return m.Amount == other.Amount && m.Currency == other.Currency
 }
+
+func (m *Money) IsLessThan(other Money) bool {
+	return m.Amount < other.Amount
+}

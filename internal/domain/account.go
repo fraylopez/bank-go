@@ -28,7 +28,7 @@ func (a *Account) Deposit(d Money) error {
 }
 
 func (a *Account) Withdraw(w Money) error {
-	if a.Balance.Amount < w.Amount {
+	if a.Balance.IsLessThan(w) {
 		return &NotEnoughFundsError{}
 	}
 	if newBalance, err := a.Balance.Subtract(w); err == nil {
