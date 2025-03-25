@@ -69,3 +69,34 @@ func (r *TextFileAccountRepository) GetAccountById(id string) (*account.Account,
 
 	return nil, fmt.Errorf("account with id %s not found", id)
 }
+
+func (r *TextFileAccountRepository) UpdateAccount(account *account.Account) error {
+	accountsFile, err := os.Open(r.filePath)
+	if err != nil {
+		return err
+	}
+	defer accountsFile.Close()
+	var lines []string
+	scanner := bufio.NewScanner(accountsFile)
+	for scanner.Scan() {
+		line := scanner.Text()
+		fields := strings.Split(line, ",")
+		if len(fields) != 4 {
+			continue
+		}
+		if fields[0] == account.Id {
+			entry := fmt.Sprintf("%s,%s,%s,%f\n", account.Id, account.Holder, account.Currency, account.Balance.Amount)
+			lines = append(lines, entry)
+		} else {
+			lines = append(lines, line)
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+	err = os.WriteFile(r.filePath, []byte(strings.Join(lines, "\n")), 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}

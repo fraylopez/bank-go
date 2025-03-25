@@ -27,3 +27,11 @@ func (r *InMemoryAccountRepository) OpenAccount(account *account.Account) error 
 	r.accounts[account.Id] = account
 	return nil
 }
+
+func (r *InMemoryAccountRepository) UpdateAccount(account *account.Account) error {
+	if _, ok := r.accounts[account.Id]; !ok {
+		return &domain.AccountNotFoundError{}
+	}
+	r.accounts[account.Id] = account
+	return nil
+}

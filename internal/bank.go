@@ -29,7 +29,11 @@ func (b *Bank) Deposit(accountId string, amount float64, currency string) error 
 	if err != nil {
 		return err
 	}
-	return account.Deposit(money.MoneyFrom(amount, currency))
+	err = account.Deposit(money.MoneyFrom(amount, currency))
+	if err != nil {
+		return err
+	}
+	return b.accountRepository.UpdateAccount(account)
 }
 
 func (b *Bank) Withdraw(accountId string, amount float64, currency string) error {
