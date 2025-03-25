@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -65,6 +66,33 @@ func TestBank_UseCases(t *testing.T) {
 
 		assert.True(t, balance1.Equals(money.USD(5)))
 		assert.True(t, balance2.Equals(money.USD(5)))
+	})
+
+	t.Run("Handles concurrent transfer between accounts", func(t *testing.T) {
+		bank := GetBank()
+		accountId1, _ := bank.OpenAccount("John Doe", "USD")
+		accountId2, _ := bank.OpenAccount("Jane Doe", "USD")
+		_ = bank.Deposit(accountId1, 10, "USD")
+
+		errChan := make(chan error)
+		go func() {
+			errChan <- bank.Transfer(accountId1, accountId2, 1, "USD")
+		}()
+		go func() {
+			errChan <- bank.Transfer(accountId1, accountId2, 1, "USD")
+		}()
+
+		for i := 0; i < 2; i++ {
+			if err := <-errChan; err != nil {
+				t.Errorf("Error transferring between accounts: %v", err)
+			}
+		}
+
+		balance1, _ := bank.GetBalance(accountId1)
+		balance2, _ := bank.GetBalance(accountId2)
+
+		assert.True(t, balance1.Equals(money.USD(8)), fmt.Sprintf("Expected balance to be 0, got %v", balance1.Amount))
+		assert.True(t, balance2.Equals(money.USD(2)), fmt.Sprintf("Expected balance to be 2, got %v", balance2.Amount))
 	})
 }
 
