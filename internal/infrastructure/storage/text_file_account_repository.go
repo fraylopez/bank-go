@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -15,7 +16,12 @@ type TextFileAccountRepository struct {
 	filePath string
 }
 
-func NewTextFileAccountRepository(filePath string) *TextFileAccountRepository {
+func NewTextFileAccountRepository(filename string) *TextFileAccountRepository {
+	filePath, err := getFilePath(filename)
+	if err != nil {
+		panic(fmt.Sprintf("failed to get file directory: %v", err))
+	}
+
 	return &TextFileAccountRepository{filePath: filePath}
 }
 
@@ -94,9 +100,43 @@ func (r *TextFileAccountRepository) UpdateAccount(account *account.Account) erro
 	if err := scanner.Err(); err != nil {
 		return err
 	}
+	if len(lines) == 0 {
+		return fmt.Errorf("account with id %s not found", account.Id)
+	}
 	err = os.WriteFile(r.filePath, []byte(strings.Join(lines, "\n")), 0644)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func getFilePath(filename string) (string, error) {
+	root, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	// find go.mod file directory
+	for {
+		if _, err := os.Stat(filepath.Join(root, "go.mod")); err == nil {
+			break
+		}
+		root = filepath.Dir(root)
+	}
+	// create a db directory if it doesn't exist
+	dbDir := filepath.Join(root, "db")
+	if _, err := os.Stat(dbDir); os.IsNotExist(err) {
+		if err := os.Mkdir(dbDir, os.ModePerm); err != nil {
+			return "", err
+		}
+	}
+	// create a db/accounts directory if it doesn't exist
+
+	// create a db/accounts/filename directory if it doesn't exist
+	filePath := filepath.Join(dbDir, filename)
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		if err := os.WriteFile(filePath, []byte{}, 0644); err != nil {
+			return "", err
+		}
+	}
+	return filePath, nil
 }

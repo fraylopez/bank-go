@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"sync"
-
 	"github.com/fraylopez/bank-go/internal/domain/account"
 	"github.com/fraylopez/bank-go/internal/domain/money"
 )
@@ -10,13 +8,13 @@ import (
 // Bank is a struct that represents a bank
 type Bank struct {
 	accountRepository account.AccountRepository
-	mutex             *sync.Mutex
+	transferService   account.TransferService
 }
 
 func NewBank(accountRepository account.AccountRepository) *Bank {
 	return &Bank{
 		accountRepository: accountRepository,
-		mutex:             new(sync.Mutex),
+		transferService:   account.NewTransferService(accountRepository),
 	}
 }
 
@@ -61,28 +59,5 @@ func (b *Bank) GetBalance(accountId string) (money.Money, error) {
 }
 
 func (b *Bank) Transfer(fromAccountId string, toAccountId string, amount float64, currency string) error {
-	b.mutex.Lock()
-	defer b.mutex.Unlock()
-
-	fromAccount, err := b.accountRepository.GetAccountById(fromAccountId)
-	if err != nil {
-		return err
-	}
-	toAccount, err := b.accountRepository.GetAccountById(toAccountId)
-	if err != nil {
-		return err
-	}
-	if err := fromAccount.Withdraw(money.MoneyFrom(amount, currency)); err != nil {
-		return err
-	}
-	if err := toAccount.Deposit(money.MoneyFrom(amount, currency)); err != nil {
-		return err
-	}
-	if err := b.accountRepository.UpdateAccount(fromAccount); err != nil {
-		return err
-	}
-	if err := b.accountRepository.UpdateAccount(toAccount); err != nil {
-		return err
-	}
-	return nil
+	return b.transferService.Transfer(fromAccountId, toAccountId, money.MoneyFrom(amount, currency))
 }
