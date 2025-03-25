@@ -1,4 +1,4 @@
-package domain
+package money
 
 func USD(amount float64) Money {
 	return Money{

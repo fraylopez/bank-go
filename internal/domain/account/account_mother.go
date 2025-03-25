@@ -1,4 +1,4 @@
-package domain
+package account
 
 func BuildAccount() *Account {
 	holder := "John Doe"

@@ -1,4 +1,6 @@
-package domain
+package money
+
+import "github.com/fraylopez/bank-go/internal/domain"
 
 type Money struct {
 	Amount   float64
@@ -26,7 +28,7 @@ func MoneyFrom(amount float64, currency string) Money {
 
 func (m *Money) Add(addend Money) (Money, error) {
 	if m.Currency != addend.Currency {
-		return Money{}, &CurrencyMismatchError{}
+		return Money{}, &domain.CurrencyMismatchError{}
 	}
 	return Money{
 
@@ -38,7 +40,7 @@ func (m *Money) Add(addend Money) (Money, error) {
 func (m *Money) Subtract(subtrahend Money) (Money, error) {
 	if m.Currency != subtrahend.Currency {
 		// convert amount to m.Currency
-		return Money{}, &CurrencyMismatchError{}
+		return Money{}, &domain.CurrencyMismatchError{}
 	}
 	return Money{
 		Amount:   m.Amount - subtrahend.Amount,

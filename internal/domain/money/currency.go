@@ -1,4 +1,4 @@
-package domain
+package money
 
 type Currencies string
 
