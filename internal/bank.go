@@ -17,43 +17,43 @@ func NewBank(accountRepository account.AccountRepository) *Bank {
 }
 
 func (b *Bank) OpenAccount(holder string, currency string) (string, error) {
-	account := account.NewAccount(holder, currency)
-	if err := b.accountRepository.OpenAccount(account); err != nil {
+	newAccount := account.NewAccount(holder, currency)
+	if err := b.accountRepository.OpenAccount(newAccount); err != nil {
 		return "", err
 	}
-	return account.Id, nil
+	return newAccount.Id, nil
 }
 
 func (b *Bank) Deposit(accountId string, amount float64, currency string) error {
-	account, err := b.accountRepository.GetAccountById(accountId)
+	acc, err := b.accountRepository.GetAccountById(accountId)
 	if err != nil {
 		return err
 	}
-	err = account.Deposit(money.MoneyFrom(amount, currency))
+	err = acc.Deposit(money.MoneyFrom(amount, currency))
 	if err != nil {
 		return err
 	}
-	return b.accountRepository.UpdateAccount(account)
+	return b.accountRepository.UpdateAccount(acc)
 }
 
 func (b *Bank) Withdraw(accountId string, amount float64, currency string) error {
-	account, err := b.accountRepository.GetAccountById(accountId)
+	acc, err := b.accountRepository.GetAccountById(accountId)
 	if err != nil {
 		return err
 	}
-	err = account.Withdraw(money.MoneyFrom(amount, currency))
+	err = acc.Withdraw(money.MoneyFrom(amount, currency))
 	if err != nil {
 		return err
 	}
-	return b.accountRepository.UpdateAccount(account)
+	return b.accountRepository.UpdateAccount(acc)
 }
 
 func (b *Bank) GetBalance(accountId string) (money.Money, error) {
-	account, err := b.accountRepository.GetAccountById(accountId)
+	acc, err := b.accountRepository.GetAccountById(accountId)
 	if err != nil {
 		return money.Money{}, err
 	}
-	return account.Balance, nil
+	return acc.Balance, nil
 }
 
 func (b *Bank) Transfer(fromAccountId string, toAccountId string, amount float64, currency string) error {
