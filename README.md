@@ -8,7 +8,7 @@ It can be accessed via HTTP API and follows Hexagonal Architecture.
 
 ### Use Cases
 
-```plantuml
+```plantuml∂
 @startuml
 
 left to right direction
