@@ -4,9 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/stretchr/testify/assert"
 
-	"github.com/fraylopez/bank-go/internal/domain/account"
 	"github.com/fraylopez/bank-go/internal/domain/money"
 	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
 )

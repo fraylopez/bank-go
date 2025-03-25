@@ -14,11 +14,12 @@ func TestBankTextFileRepoIntegration(t *testing.T) {
 		bank := GetTestBank()
 		accountID, _ := bank.OpenAccount("John Doe", "USD")
 		_ = bank.Deposit(accountID, 1000, "USD")
+		_ = bank.Withdraw(accountID, 500, "USD")
 
 		theSameBank := GetTestBank()
 		balance, _ := theSameBank.GetBalance(accountID)
 
-		assert.True(t, balance.Equals(money.USD(1000)))
+		assert.True(t, balance.Equals(money.USD(500)))
 	})
 }
 
