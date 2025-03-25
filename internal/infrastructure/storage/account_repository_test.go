@@ -1,8 +1,10 @@
-package storage
+package storage_test
 
 import (
-	"github.com/fraylopez/bank-go/internal/domain"
 	"testing"
+
+	"github.com/fraylopez/bank-go/internal/domain/account"
+	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
 )
 
 func TestAccountRepository(t *testing.T) {
