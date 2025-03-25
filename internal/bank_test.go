@@ -1,13 +1,17 @@
 package internal
 
 import (
-	"github.com/fraylopez/bank-go/internal/domain"
-	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
-	"github.com/google/uuid"
 	"testing"
+
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
+
+	"github.com/fraylopez/bank-go/internal/domain/account"
+	"github.com/fraylopez/bank-go/internal/domain/money"
+	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
 )
 
-func TestBank(t *testing.T) {
+func TestBank_UseCases(t *testing.T) {
 	t.Run("Open a Account", func(t *testing.T) {
 		bank := GetBank()
 		accountId, err := bank.OpenAccount("John Doe", "USD")
@@ -43,7 +47,7 @@ func TestBank(t *testing.T) {
 		accountId, _ := bank.OpenAccount("John Doe", "USD")
 		_ = bank.Deposit(accountId, 10, "USD")
 		balance, _ := bank.GetBalance(accountId)
-		if !balance.Equals(domain.USD(10)) {
+		if !balance.Equals(money.USD(10)) {
 			t.Errorf("Expected balance to be 10, got %v", balance)
 		}
 	})

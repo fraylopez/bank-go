@@ -1,18 +1,21 @@
 package storage
 
-import "github.com/fraylopez/bank-go/internal/domain"
+import (
+	"github.com/fraylopez/bank-go/internal/domain"
+	"github.com/fraylopez/bank-go/internal/domain/account"
+)
 
 type InMemoryAccountRepository struct {
-	accounts map[string]*domain.Account
+	accounts map[string]*account.Account
 }
 
 func NewInMemoryAccountRepository() *InMemoryAccountRepository {
 	return &InMemoryAccountRepository{
-		accounts: make(map[string]*domain.Account),
+		accounts: make(map[string]*account.Account),
 	}
 }
 
-func (r *InMemoryAccountRepository) GetAccountById(accountId string) (*domain.Account, error) {
+func (r *InMemoryAccountRepository) GetAccountById(accountId string) (*account.Account, error) {
 	account, ok := r.accounts[accountId]
 	if !ok {
 		return nil, &domain.AccountNotFoundError{}
@@ -20,7 +23,7 @@ func (r *InMemoryAccountRepository) GetAccountById(accountId string) (*domain.Ac
 	return account, nil
 }
 
-func (r *InMemoryAccountRepository) OpenAccount(account *domain.Account) error {
+func (r *InMemoryAccountRepository) OpenAccount(account *account.Account) error {
 	r.accounts[account.Id] = account
 	return nil
 }
