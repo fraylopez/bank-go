@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/fraylopez/bank-go/internal/domain/money"
 	"github.com/fraylopez/bank-go/internal/infrastructure/storage"
@@ -49,8 +50,24 @@ func TestBank_UseCases(t *testing.T) {
 			t.Errorf("Expected balance to be 10, got %v", balance)
 		}
 	})
+
+	t.Run("Transfer between accounts", func(t *testing.T) {
+		bank := GetBank()
+		accountId1, _ := bank.OpenAccount("John Doe", "USD")
+		accountId2, _ := bank.OpenAccount("Jane Doe", "USD")
+		_ = bank.Deposit(accountId1, 10, "USD")
+		err := bank.Transfer(accountId1, accountId2, 5, "USD")
+		if err != nil {
+			t.Errorf("Error transferring between accounts: %v", err)
+		}
+		balance1, _ := bank.GetBalance(accountId1)
+		balance2, _ := bank.GetBalance(accountId2)
+
+		assert.True(t, balance1.Equals(money.USD(5)))
+		assert.True(t, balance2.Equals(money.USD(5)))
+	})
 }
 
 func GetBank() *Bank {
-	return NewBank(storage.NewInMemoryAccountRepository())
+	return NewBank(storage.NewTextFileAccountRepository("test_accounts.txt"))
 }

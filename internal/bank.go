@@ -68,5 +68,14 @@ func (b *Bank) Transfer(fromAccountId string, toAccountId string, amount float64
 	if err := fromAccount.Withdraw(money.MoneyFrom(amount, currency)); err != nil {
 		return err
 	}
-	return toAccount.Deposit(money.MoneyFrom(amount, currency))
+	if err := toAccount.Deposit(money.MoneyFrom(amount, currency)); err != nil {
+		return err
+	}
+	if err := b.accountRepository.UpdateAccount(fromAccount); err != nil {
+		return err
+	}
+	if err := b.accountRepository.UpdateAccount(toAccount); err != nil {
+		return err
+	}
+	return nil
 }
