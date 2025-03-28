@@ -36,6 +36,26 @@ func TestTransferService(t *testing.T) {
 		assert.Equal(t, 5.0, updatedAcc2.Balance.Amount)
 	})
 
+	t.Run("should prevent transfer between different currency accounts", func(t *testing.T) {
+		repo := storage.NewTextFileAccountRepository("test_accounts.txt")
+
+		acc1 := account.BuildEURAccount()
+		acc2 := account.BuildUSDAccount()
+		_ = acc1.Deposit(money.EUR(10))
+
+		_ = repo.OpenAccount(acc1)
+		_ = repo.OpenAccount(acc2)
+
+		transferService := account.NewTransferService(repo)
+
+		err := transferService.Transfer(acc1.Id, acc2.Id, money.EUR(5))
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "currency mismatch", err.Error())
+		assert.True(t, acc1.Balance.Equals(money.EUR(10)))
+		assert.True(t, acc2.Balance.Equals(money.USD(0)))
+	})
+
 	t.Run("should transfer concurrently", func(t *testing.T) {
 		repo := storage.NewTextFileAccountRepository("test_accounts.txt")
 

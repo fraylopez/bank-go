@@ -182,7 +182,7 @@ Response:
   - [x] Users can withdraw money
   - [x] Users can get balance
   - [ ] Graceful shutdown bmwg2
-  - [ ] Users can transfer money between accounts
+  - [x] Users can transfer money between accounts
 - [ ] Use a database to store accounts
 
 ### Refactorings
