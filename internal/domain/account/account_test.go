@@ -42,8 +42,3 @@ func TestAccount(t *testing.T) {
 		assert.IsType(t, &domain.CurrencyMismatchError{}, err)
 	})
 }
-
-func deposit(t *testing.T, account *Account, amount money.Money) {
-	err := account.Deposit(amount)
-	assert.Nil(t, err)
-}
