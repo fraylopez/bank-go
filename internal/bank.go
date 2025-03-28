@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/fraylopez/bank-go/internal/domain/account"
+	"github.com/fraylopez/bank-go/internal/domain/loans"
 	"github.com/fraylopez/bank-go/internal/domain/money"
 )
 
@@ -9,12 +10,14 @@ import (
 type Bank struct {
 	accountRepository account.AccountRepository
 	transferService   account.TransferService
+	loanService       loans.LoanService
 }
 
 func NewBank(accountRepository account.AccountRepository) *Bank {
 	return &Bank{
 		accountRepository: accountRepository,
 		transferService:   account.NewTransferService(accountRepository),
+		loanService:       loans.NewNoLoansService(),
 	}
 }
 
@@ -43,7 +46,7 @@ func (b *Bank) Withdraw(accountId string, amount float64, currency string) error
 	if err != nil {
 		return err
 	}
-	err = acc.Withdraw(money.MoneyFrom(amount, currency))
+	err = acc.Withdraw(money.MoneyFrom(amount, currency), b.loanService)
 	if err != nil {
 		return err
 	}

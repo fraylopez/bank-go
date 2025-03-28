@@ -35,7 +35,7 @@ func (t *InMemoryTransferService) Transfer(fromAccountId string, toAccountId str
 	if err != nil {
 		return err
 	}
-	if err := fromAccount.Withdraw(amount); err != nil {
+	if err := fromAccount.Withdraw(amount, nil); err != nil {
 		return err
 	}
 	if err := toAccount.Deposit(amount); err != nil {

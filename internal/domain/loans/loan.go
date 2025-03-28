@@ -1,9 +1,11 @@
 package loans
 
-import "github.com/fraylopez/bank-go/internal/domain/account"
+import (
+	"github.com/fraylopez/bank-go/internal/domain/money"
+)
 
 type LoanService interface {
-	CanAssignLoan(account *account.Account) (bool, error)
+	CanAssignLoan(accountBalance money.Money, requested money.Money) (bool, error)
 }
 
 type NoLoansService struct{}
@@ -12,6 +14,6 @@ func NewNoLoansService() LoanService {
 	return &NoLoansService{}
 }
 
-func (*NoLoansService) CanAssignLoan(_ *account.Account) (bool, error) {
+func (*NoLoansService) CanAssignLoan(_ money.Money, _ money.Money) (bool, error) {
 	return false, nil
 }
